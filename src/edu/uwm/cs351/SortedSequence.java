@@ -38,15 +38,17 @@ public class SortedSequence<E> implements Cloneable {
 	
 	private static class Node<T>{
 		T data;
-		Node next;
-		Node prev;
+		Node<T> next;
+		Node<T> prev;
 		
 		
 		public Node() {
-			
+			data = null;
+			next = prev = null;
 		}
 		public Node(T object) { 
-			
+			data = object;
+			next = prev = null;
 		}
 	}
 
@@ -56,9 +58,9 @@ public class SortedSequence<E> implements Cloneable {
 	// NB: You must use generics correctly: no raw types!
 	
 	int manyItems;
-	Node dummy;
-	Node cursor;
-	Comparator comparator;
+	Node<E> dummy;
+	Node<E> cursor;
+	Comparator<E> comparator;
 	
 
 	private static Consumer<String> reporter = (s) -> { System.err.println("Invariant error: " + s); };
