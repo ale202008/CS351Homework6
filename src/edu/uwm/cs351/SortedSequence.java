@@ -43,7 +43,7 @@ public class SortedSequence<E> implements Cloneable {
 		
 		
 		public Node() {
-			data = null;
+			data = dummy;
 			next = prev = null;
 		}
 		public Node(T object) { 
