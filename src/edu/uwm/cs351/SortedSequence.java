@@ -93,6 +93,55 @@ public class SortedSequence<E> implements Cloneable {
 		
 		// Implement conditions.
 		
+		//Invariant 1
+		if (comparator == null) {
+			return report("comparator is null.");
+		}
+		
+		//Invariant 2
+		if (dummy == null) {
+			return report("dummy is null.");
+		}
+		
+		//Invariant 3
+		if (dummy.data != dummy) {
+			return report("dummy's data does not refer to itself.");
+		}
+		
+		//Invariant 4
+		for (Node i = dummy; dummy != null; i = i.next) {
+			if (i.next == null) {
+				return report("the list is not cyclic.");
+			}
+		}
+		
+		//Invariant 5
+		if (cursor == null) {
+			return report("cursor is null.");
+		}
+		else {
+			Node i;
+			for (i = dummy; dummy != null; i = i.next) {
+				if (cursor == i) {
+					break;
+				}
+			}
+			if (i != cursor) {
+				return report("cursor is not in the list.");
+			}
+		}
+		
+		//Invariant 6
+		int count = 0;
+		for (Node i = dummy; dummy != null; i = i.next) {
+			if (i != null) {
+				count++;
+			}
+		}
+		if (count != manyItems) {
+			return report("manyItems do not equal element or vice versa.");
+		}
+		
 		// If no problems found, then return true:
 		return true;
 	}
