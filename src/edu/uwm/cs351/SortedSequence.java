@@ -42,9 +42,10 @@ public class SortedSequence<E> implements Cloneable {
 		Node<T> prev;
 		
 		
+		@SuppressWarnings("unchecked")
 		public Node() {
-			data = null;
-			next = prev = null;
+			data = (T) this;
+			next = prev = (Node<T>) this;
 		}
 		public Node(T object) { 
 			data = object;
@@ -83,6 +84,9 @@ public class SortedSequence<E> implements Cloneable {
 		//    In particular, no prev or next links may be null.
 		//    If you do this check correctly, you will not need to
 		//    use the Tortoise & Hare Algorithm
+		//		-- must be cyclic
+		//		-- next link having the opposite prev link
+		//      -- No prev/next link may be null
 		// 5. The cursor may not be null, and must be a node in the list.
 		// 6. manyItems must refer to the actual number of values 
 		//    in the sort sequence (obviously, not including the dummy data).
@@ -109,32 +113,41 @@ public class SortedSequence<E> implements Cloneable {
 		}
 		
 		//Invariant 4
-		for (Node<E> i = dummy; dummy != null; i = i.next) {
-			if (i.next == null) {
-				return report("the list is not cyclic.");
+		
+		Node<E> i;
+		for (i = dummy; dummy != null; i = i.next) {
+			if (i.next == null || i.prev == null) {
+				return report("a .next or .prev is null.");
+			}
+			if (i.next == dummy) {
+				break;
 			}
 		}
+		if (i.next != dummy) {
+			return report("list is not cyclic.");
+		}
+		
 		
 		//Invariant 5
 		if (cursor == null) {
 			return report("cursor is null.");
 		}
 		else {
-			Node<E> i;
-			for (i = dummy; dummy != null; i = i.next) {
-				if (cursor == i) {
+			Node<E> t;
+			for (t = dummy; dummy != null; t = t.next) {
+				if (cursor == t) {
 					break;
 				}
 			}
-			if (i != cursor) {
+			if (t != cursor) {
 				return report("cursor is not in the list.");
 			}
 		}
 		
 		//Invariant 6
 		int count = 0;
-		for (Node<E> i = dummy; dummy != null; i = i.next) {
-			if (i != null) {
+		for (Node<E> t = dummy; dummy != null; t = t.next) {
+			if (t != null) {
 				count++;
 			}
 		}
@@ -156,8 +169,7 @@ public class SortedSequence<E> implements Cloneable {
 	@SuppressWarnings("unchecked")
 	public SortedSequence( )
 	{
-		dummy = new Node<E>();
-		dummy.data = (E) dummy;
+
 	}
 	
 	/**
