@@ -109,7 +109,7 @@ public class SortedSequence<E> implements Cloneable {
 		}
 		
 		//Invariant 4
-		for (Node i = dummy; dummy != null; i = i.next) {
+		for (Node<E> i = dummy; dummy != null; i = i.next) {
 			if (i.next == null) {
 				return report("the list is not cyclic.");
 			}
@@ -120,7 +120,7 @@ public class SortedSequence<E> implements Cloneable {
 			return report("cursor is null.");
 		}
 		else {
-			Node i;
+			Node<E> i;
 			for (i = dummy; dummy != null; i = i.next) {
 				if (cursor == i) {
 					break;
@@ -133,7 +133,7 @@ public class SortedSequence<E> implements Cloneable {
 		
 		//Invariant 6
 		int count = 0;
-		for (Node i = dummy; dummy != null; i = i.next) {
+		for (Node<E> i = dummy; dummy != null; i = i.next) {
 			if (i != null) {
 				count++;
 			}
@@ -193,6 +193,17 @@ public class SortedSequence<E> implements Cloneable {
 	// and to check compareTo (and making sure you don't compare the dummy's data)
 	// and finally for the special self-insertAll case, but otherwise
 	// please avoid special cases.
+	
+	
+	/**
+	 * Size method that returns manyItems
+	 * @return
+	 * 		manyItems, the amount of elements in the list.
+	 */
+	public int size() {
+		// TODO Auto-generated method stub
+		return manyItems;
+	}
 
 
 	/**
