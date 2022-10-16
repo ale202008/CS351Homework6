@@ -3,6 +3,11 @@
 
 package edu.uwm.cs351;
 
+/*
+ * Andrew Le
+ * Homework 6, CS 351
+ */
+
 import java.util.Comparator;
 import java.util.function.Consumer;
 
@@ -30,11 +35,31 @@ public class SortedSequence<E> implements Cloneable {
 	//    (Our solution does not use any other constructors.)
 	// The fields of Node should have "default" access (neither public, nor private)
 	// and should not start with underscores.
+	
+	private static class Node<T>{
+		T data;
+		Node next;
+		Node prev;
+		
+		
+		public Node() {
+			
+		}
+		public Node(T object) { 
+			
+		}
+	}
 
 	
 	// TODO: Declare the private fields needed for our data structure:
 	// a `manyItems` field, a dummy, a cursor, and a comparator.
 	// NB: You must use generics correctly: no raw types!
+	
+	int manyItems;
+	Node dummy;
+	Node cursor;
+	Comparator comparator;
+	
 
 	private static Consumer<String> reporter = (s) -> { System.err.println("Invariant error: " + s); };
 	
