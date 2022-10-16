@@ -43,13 +43,14 @@ public class SortedSequence<E> implements Cloneable {
 		
 		
 		public Node() {
-			data = dummy;
+			data = null;
 			next = prev = null;
 		}
 		public Node(T object) { 
 			data = object;
 			next = prev = null;
 		}
+		
 	}
 
 	
@@ -57,11 +58,10 @@ public class SortedSequence<E> implements Cloneable {
 	// a `manyItems` field, a dummy, a cursor, and a comparator.
 	// NB: You must use generics correctly: no raw types!
 	
-	int manyItems;
-	Node<E> dummy;
-	Node<E> cursor;
-	Comparator<E> comparator;
-	
+	private int manyItems;
+	private Node<E> dummy;
+	private Node<E> cursor;
+	private Comparator<E> comparator;
 
 	private static Consumer<String> reporter = (s) -> { System.err.println("Invariant error: " + s); };
 	
@@ -153,9 +153,11 @@ public class SortedSequence<E> implements Cloneable {
 	 * Initialize an empty sorted sequence 
 	 * using natural ordering (compareTo)
 	 **/   
+	@SuppressWarnings("unchecked")
 	public SortedSequence( )
 	{
-		this (null);
+		dummy = new Node<E>();
+		dummy.data = (E) dummy;
 	}
 	
 	/**
