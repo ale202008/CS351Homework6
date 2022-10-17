@@ -283,8 +283,8 @@ public class SortedSequence<E> implements Cloneable {
 	}
 	
 	/**
-	 * Accessor method to determine whether this book has a specified 
-	 * current element that can be retrieved with the 
+	 * Accessor method to determine whether this SortedSequence has a 
+	 * specified current element that can be retrieved with the 
 	 * getCurrent method. 
 	 * @return
 	 *   true (there is a current element) or false (there is no current element at the moment)
@@ -292,12 +292,33 @@ public class SortedSequence<E> implements Cloneable {
 	public boolean isCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of isCurrent";
-		// TODO: Implemented by student.
-		if (cursor == null) {
+		if (cursor == dummy) {
 			return false;
 		}
 		else
 			return true;
+	}
+	
+	/**
+	 * Accessor method to get the current element of this SortedSequence. 
+	 * @precondition
+	 *   isCurrent() returns true.
+	 * @return
+	 *   the current element of this SortedSequence.
+	 * @exception IllegalStateException
+	 *   Indicates that there is no current element, so 
+	 *   getCurrent may not be called.
+	 **/
+	public Object getCurrent( )
+	{
+		assert wellFormed() : "invariant failed at start of getCurrent";
+		// TODO: Implemented by student.
+		if (isCurrent()) {
+			return cursor.data;
+		}
+		else
+			throw new IllegalStateException();
+		// Don't change "this" object!
 	}
 
 
