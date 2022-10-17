@@ -121,13 +121,14 @@ public class SortedSequence<E> implements Cloneable {
 		}
 		
 		//Invariant 4
+		//Pointed out an error with Max Dreher's Invariant 4 code.
 		
 		Node<E> i;
 		for (i = dummy; i != null; i = i.next) {
 			if (i.next == null || i.prev == null) {
 				return report("a .next or .prev is null.");
 			}
-			if (i.next != i && i.next.prev != i) {
+			if (i.next != null && i.next.prev != i) {
 				return report("not cyclic");
 			}
 			if (i.next == dummy) {
@@ -137,7 +138,6 @@ public class SortedSequence<E> implements Cloneable {
 		if (i.next != dummy) {
 			return report("list is not cyclic.");
 		}
-		
 		
 		//Invariant 5
 		if (cursor == null) {
@@ -281,6 +281,7 @@ public class SortedSequence<E> implements Cloneable {
 	 * @postcondition
 	 * 		if dummy.next does equal dummy, then there are no
 	 * 		elements within the list yet so leave cursor = dummy.
+	 * 		No current element.
 	 **/ 
 	public void start( )
 	{
@@ -294,7 +295,8 @@ public class SortedSequence<E> implements Cloneable {
 	/**
 	 * Set the current element to the first element that is equal
 	 * or greater than the guide.
-	 * @param guide element to compare against, must not be null.
+	 * @param 
+	 * 		guide element to compare against, must not be null.
 	 */
 	public void setCurrent(E guide) {
 		assert wellFormed() : "invariant failed at start of setCurrent";
@@ -338,21 +340,18 @@ public class SortedSequence<E> implements Cloneable {
 	public E getCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of getCurrent";
-		// TODO: Implemented by student.
 		if (isCurrent()) {
 			return cursor.data;
 		}
 		else
 			throw new IllegalStateException();
-		// Don't change "this" object!
 	}
 	
 	/**
-	 * remove() methods that removes the current position where
+	 * removeCurrent() method that removes the current position where
 	 * cursor is.
 	 * @exception
-	 * 		if version is not equal to the colVersion, then throw exception.
-	 * 		if canRemove is false, then throw exception.
+	 * 		if isCurrent is false, then throw exception.
 	 */
 	public void removeCurrent() {
 		assert wellFormed(): "invariant failed at the start of remove";
@@ -398,14 +397,12 @@ public class SortedSequence<E> implements Cloneable {
 	/**
 	 * Used similar code from Homework 4 with different cases
 	 * @param 
-	 * 		Appointment object to be added to the doubly list.
-	 * @exception
+	 * 		E object to be added to the doubly list.
+	 * @exception IllegalArgumentException
 	 * 		if element is null throw an exception
-	 * @return 
-	 * 		true if add() is called.
 	 */
 	public void insert(E element){	
-		assert wellFormed() : "invariant failed at start of add";
+		assert wellFormed() : "invariant failed at start of insert";
 		
 		if (element == null) {
 			throw new IllegalArgumentException();
@@ -423,7 +420,6 @@ public class SortedSequence<E> implements Cloneable {
 			temp.prev = dummy;
 			dummy.next.prev = temp;
 			dummy.next = temp;
-			
 		}
 		else {
 			Node<E> i;
@@ -445,10 +441,17 @@ public class SortedSequence<E> implements Cloneable {
 			}
 			
 		manyItems++;
-		assert wellFormed() : "invariant failed at end of add";
+		assert wellFormed() : "invariant failed at end of insert";
 	}
 	
+	/**
+	 * insertAll() method that inserts the elements of another
+	 * SortedSequence
+	 * @param
+	 * 		A SortedSequence<E> sortedSequence
+	 */
 	public void insertAll(SortedSequence<E> sortedSequence) {
+		assert wellFormed() : "invariant failed at start of insertAll";
 		
 		SortedSequence<E> sequenceClone = sortedSequence;
 		
@@ -464,6 +467,8 @@ public class SortedSequence<E> implements Cloneable {
 				break;
 			}
 		}
+		
+		assert wellFormed() : "invariant failed at start of insertAll";
 	}
 	
 
@@ -495,6 +500,8 @@ public class SortedSequence<E> implements Cloneable {
 		// (Create a new dummy node outside of loop).
 		// TODO: Copy the list
 		// (make sure cursor is updated too!)
+		
+		//Took most of the code from Homework 5.
 		
 		answer = new SortedSequence<E>(this.comparator);
 		
