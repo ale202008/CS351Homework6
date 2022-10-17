@@ -41,12 +41,20 @@ public class SortedSequence<E> implements Cloneable {
 		Node<T> next;
 		Node<T> prev;
 		
-		
+		/**
+		 * Makes a dummy node.
+		 */
 		@SuppressWarnings("unchecked")
 		public Node() {
 			data = (T) this;
 			next = prev = (Node<T>) this;
 		}
+		
+		/**
+		 * Makes a node with the given parameters.
+		 * @param
+		 * 		T object
+		 */
 		public Node(T object) { 
 			data = object;
 			next = prev = null;
@@ -208,7 +216,6 @@ public class SortedSequence<E> implements Cloneable {
 	{
 		manyItems = 0;
 		cursor = dummy;
-		
 	}
 	
 	/**
@@ -256,6 +263,41 @@ public class SortedSequence<E> implements Cloneable {
 	public int size() {
 		// TODO Auto-generated method stub
 		return manyItems;
+	}
+	
+	/**
+	 * Set the cursor equal to dummy.next when it is not equal
+	 * to dummy, meaning there exists another node in the list
+	 * aside from dummy.
+	 * @postcondition
+	 * 		if dummy.next does equal dummy, then there are no
+	 * 		elements within the list yet so leave cursor = dummy.
+	 **/ 
+	public void start( )
+	{
+		assert wellFormed() : "invariant failed at start of start";
+		if (dummy.next != dummy) {
+			cursor = dummy.next;
+		}
+		assert wellFormed() : "invariant failed at end of start";
+	}
+	
+	/**
+	 * Accessor method to determine whether this book has a specified 
+	 * current element that can be retrieved with the 
+	 * getCurrent method. 
+	 * @return
+	 *   true (there is a current element) or false (there is no current element at the moment)
+	 **/
+	public boolean isCurrent( )
+	{
+		assert wellFormed() : "invariant failed at start of isCurrent";
+		// TODO: Implemented by student.
+		if (cursor == null) {
+			return false;
+		}
+		else
+			return true;
 	}
 
 
