@@ -13,7 +13,6 @@ import java.util.ConcurrentModificationException;
 import java.util.function.Consumer;
 
 import edu.uwm.cs.junit.LockedTestCase;
-import edu.uwm.cs351.ApptBook.Node;
 
 /******************************************************************************
  * This class is a homework assignment;
@@ -430,11 +429,9 @@ public class SortedSequence<E> implements Cloneable {
 		}
 		else {
 			Node<E> i;
-			Node<E> end;
-			for (end = dummy; end != null; end = end.prev) {
-				if (end.next == dummy) {
-					break;
-				}
+			Node<E> end = null;
+			if (dummy.prev != dummy) {
+				end = dummy.prev;
 			}
 			for (i = end; i != null; i = i.prev) {
 				if (comparator.compare(element, i.data) >= 0) {
