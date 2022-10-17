@@ -233,7 +233,6 @@ public class SortedSequence<E> implements Cloneable {
 			// in which you cast the first argument to Comparable<E>
 			// so that you use compareTo.
 			// (Lambda syntax will make the code shorter, but is not required.)
-			
 			comparator = (a,b) -> ((Comparable<E>) a).compareTo(b);
 		}
 		// TODO: Implemented by student.
@@ -404,6 +403,23 @@ public class SortedSequence<E> implements Cloneable {
 			
 		manyItems++;
 		assert wellFormed() : "invariant failed at end of add";
+	}
+	
+	public void insertAll(SortedSequence<E> sortedSequence) {
+		
+		if (sortedSequence.manyItems == 0) {
+			throw new IllegalStateException();
+		}
+		
+		SortedSequence<E> sequenceClone = sortedSequence;
+		
+		if (sortedSequence == this) {
+			collectionClone = sortedSequence.clone();
+		}
+
+		for (Node i = collectionClone.head; i != null; i = i.next) {
+			this.add(i.data);
+		}
 	}
 	
 
