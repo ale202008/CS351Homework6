@@ -233,6 +233,8 @@ public class SortedSequence<E> implements Cloneable {
 			// in which you cast the first argument to Comparable<E>
 			// so that you use compareTo.
 			// (Lambda syntax will make the code shorter, but is not required.)
+			
+			comparator = (a,b) -> ((Comparable<E>) a).compareTo(b);
 		}
 		// TODO: Implemented by student.
 		assert wellFormed() : "invariant failed at end of constructor";
