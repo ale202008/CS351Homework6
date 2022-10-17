@@ -119,6 +119,9 @@ public class SortedSequence<E> implements Cloneable {
 			if (i.next == null || i.prev == null) {
 				return report("a .next or .prev is null.");
 			}
+			if (i.next != i && i.next.prev != i) {
+				return report("not cyclic");
+			}
 			if (i.next == dummy) {
 				break;
 			}
@@ -138,6 +141,11 @@ public class SortedSequence<E> implements Cloneable {
 				if (cursor == t) {
 					break;
 				}
+				else {
+					if (t.next == dummy) {
+						break;
+					}
+				}
 			}
 			if (t != cursor) {
 				return report("cursor is not in the list.");
@@ -147,12 +155,41 @@ public class SortedSequence<E> implements Cloneable {
 		//Invariant 6
 		int count = 0;
 		for (Node<E> t = dummy; dummy != null; t = t.next) {
-			if (t != null) {
+			if (t != null && t != dummy) {
 				count++;
+			}
+			if (t.next == dummy) {
+				break;
 			}
 		}
 		if (count != manyItems) {
 			return report("manyItems do not equal element or vice versa.");
+		}
+		
+		//Invariant 7
+		for (Node<E> t = dummy; dummy != null; t = t.next) {
+			if (t.data == null) {
+				return report("Node<E> data is null.");
+			}
+			else {
+				if (t.next == dummy) {
+					break;
+				}
+			}
+		}
+		
+		//Invariant 8
+		for (Node<E> t = dummy; dummy != null; t = t.next) {
+			if (t != dummy && t.next != dummy) {
+				if (comparator.compare(t.data, t.next.data) > 0) {
+					return report("it is in not in non-decreasing order.");
+				}
+			}
+			else {
+				if (t.next == dummy) {
+					break;
+				}
+			}
 		}
 		
 		// If no problems found, then return true:
@@ -169,7 +206,9 @@ public class SortedSequence<E> implements Cloneable {
 	@SuppressWarnings("unchecked")
 	public SortedSequence( )
 	{
-
+		manyItems = 0;
+		cursor = dummy;
+		
 	}
 	
 	/**
