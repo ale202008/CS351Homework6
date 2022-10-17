@@ -509,6 +509,25 @@ public class SortedSequence<E> implements Cloneable {
 		
 		if (this.isCurrent()) {
 			answer.setCurrent(this.getCurrent());
+			boolean good = false;
+			
+			while (!good) {
+				int countThis = 0;
+				int countAnswer = 0;
+				for (Node<E> i = this.dummy; i != this.cursor && this.cursor != null; i = i.next) {
+					countThis++;
+				}
+				for (Node<E> i = answer.dummy; i != answer.cursor && answer.cursor != null; i = i.next) {
+					countAnswer++;
+				}
+				
+				if (countThis != countAnswer) {
+					answer.advance();
+				}
+				else {
+					good = true;
+				}
+			}
 
 		}
 	
