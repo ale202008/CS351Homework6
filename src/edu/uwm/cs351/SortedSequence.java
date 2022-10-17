@@ -9,6 +9,7 @@ package edu.uwm.cs351;
  */
 
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.function.Consumer;
 
 import edu.uwm.cs.junit.LockedTestCase;
@@ -324,6 +325,29 @@ public class SortedSequence<E> implements Cloneable {
 			throw new IllegalStateException();
 		// Don't change "this" object!
 	}
+	
+	/**
+	 * remove() methods that removes the current position where
+	 * cursor is.
+	 * @exception
+	 * 		if version is not equal to the colVersion, then throw exception.
+	 * 		if canRemove is false, then throw exception.
+	 */
+	public void removeCurrent() {
+		assert wellFormed(): "invariant failed at the start of remove";
+		
+		if (!isCurrent()) {
+			throw new IllegalStateException();
+		}
+		
+		cursor.prev.next = cursor.next;
+		cursor.next.prev = cursor.prev;
+		cursor = cursor.next;
+		
+		manyItems--;
+		assert wellFormed(): "invariant failed at the end of remove";
+			
+	}
 
 	/**
 	 * Move forward, so that the current element will be the next element in
@@ -414,11 +438,11 @@ public class SortedSequence<E> implements Cloneable {
 		SortedSequence<E> sequenceClone = sortedSequence;
 		
 		if (sortedSequence == this) {
-			collectionClone = sortedSequence.clone();
+			sequenceClone = sortedSequence.clone();
 		}
 
-		for (Node i = collectionClone.head; i != null; i = i.next) {
-			this.add(i.data);
+		for (Node<E> i = sequenceClone.dummy.next; i != null; i = i.next) {
+			this.insert((E) i.data);
 		}
 	}
 	
