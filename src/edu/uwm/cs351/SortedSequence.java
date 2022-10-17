@@ -321,6 +321,31 @@ public class SortedSequence<E> implements Cloneable {
 		// Don't change "this" object!
 	}
 
+	/**
+	 * Move forward, so that the current element will be the next element in
+	 * this SortedSequence.
+	 * @precondition
+	 *   isCurrent() returns true. 
+	 * @postcondition
+	 *   If the current element was already the end element of this SortedSequence 
+	 *   (cursor is now equal to dummy), then there is no longer any current element. 
+	 *   Otherwise, the new element is the element immediately after the 
+	 *   original current element.
+	 * @exception IllegalStateException
+	 *   Indicates that there is no current element, so 
+	 *   advance may not be called.
+	 **/
+	public void advance( )
+	{
+		assert wellFormed() : "invariant failed at start of advance";
+		if (isCurrent()) {
+			cursor = cursor.next;
+		}
+		else
+			throw new IllegalStateException();
+		assert wellFormed() : "invariant failed at end of advance";
+	}
+	
 
 	/**
 	 * Generate a copy of this sorted sequence.
