@@ -9,7 +9,6 @@ package edu.uwm.cs351;
  */
 
 import java.util.Comparator;
-import java.util.ConcurrentModificationException;
 import java.util.function.Consumer;
 
 import edu.uwm.cs.junit.LockedTestCase;
@@ -124,7 +123,7 @@ public class SortedSequence<E> implements Cloneable {
 		//Invariant 4
 		
 		Node<E> i;
-		for (i = dummy; dummy != null; i = i.next) {
+		for (i = dummy; i != null; i = i.next) {
 			if (i.next == null || i.prev == null) {
 				return report("a .next or .prev is null.");
 			}
@@ -146,7 +145,7 @@ public class SortedSequence<E> implements Cloneable {
 		}
 		else {
 			Node<E> t;
-			for (t = dummy; dummy != null; t = t.next) {
+			for (t = dummy; t != null; t = t.next) {
 				if (cursor == t) {
 					break;
 				}
@@ -163,7 +162,7 @@ public class SortedSequence<E> implements Cloneable {
 		
 		//Invariant 6
 		int count = 0;
-		for (Node<E> t = dummy; dummy != null; t = t.next) {
+		for (Node<E> t = dummy; t != null; t = t.next) {
 			if (t != null && t != dummy) {
 				count++;
 			}
@@ -188,7 +187,7 @@ public class SortedSequence<E> implements Cloneable {
 		}
 		
 		//Invariant 8
-		for (Node<E> t = dummy; dummy != null; t = t.next) {
+		for (Node<E> t = dummy; t != null; t = t.next) {
 			if (t != dummy && t.next != dummy) {
 				if (comparator.compare(t.data, t.next.data) > 0) {
 					return report("it is in not in non-decreasing order.");
@@ -212,7 +211,6 @@ public class SortedSequence<E> implements Cloneable {
 	 * Initialize an empty sorted sequence 
 	 * using natural ordering (compareTo)
 	 **/   
-	@SuppressWarnings("unchecked")
 	public SortedSequence( )
 	{
 		this (null);
@@ -498,7 +496,7 @@ public class SortedSequence<E> implements Cloneable {
 		// TODO: Copy the list
 		// (make sure cursor is updated too!)
 		
-		answer = new SortedSequence<E>();
+		answer = new SortedSequence<E>(this.comparator);
 		
 		for (Node<E> i = this.dummy; i != null; i = i.next) {
 			if (i.data != this.dummy) {
@@ -511,6 +509,7 @@ public class SortedSequence<E> implements Cloneable {
 		
 		if (this.isCurrent()) {
 			answer.setCurrent(this.getCurrent());
+
 		}
 	
 		assert wellFormed() : "invariant failed at end of clone";
