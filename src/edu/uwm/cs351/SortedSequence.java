@@ -236,7 +236,14 @@ public class SortedSequence<E> implements Cloneable {
 			// (Lambda syntax will make the code shorter, but is not required.)
 			comparator = (a,b) -> ((Comparable<E>) a).compareTo(b);
 		}
+		else {
+			comparator = comp;
+		}
 		// TODO: Implemented by student.
+		manyItems = 0;
+		dummy = new Node<E>();
+		cursor = dummy;
+		
 		assert wellFormed() : "invariant failed at end of constructor";
 	}
 
@@ -288,6 +295,23 @@ public class SortedSequence<E> implements Cloneable {
 	}
 	
 	/**
+	 * Set the current element to the first element that is equal
+	 * or greater than the guide.
+	 * @param guide element to compare against, must not be null.
+	 */
+	public void setCurrent(E guide) {
+		assert wellFormed() : "invariant failed at start of setCurrent";
+		
+		if (guide == null) throw new NullPointerException("guide cannot be null");
+		start();
+		while (isCurrent() && comparator.compare(getCurrent(), guide) < 0) {
+			advance();
+		}
+		
+		assert wellFormed() : "invariant failed at end of setCurrent";
+	}
+	
+	/**
 	 * Accessor method to determine whether this SortedSequence has a 
 	 * specified current element that can be retrieved with the 
 	 * getCurrent method. 
@@ -314,7 +338,7 @@ public class SortedSequence<E> implements Cloneable {
 	 *   Indicates that there is no current element, so 
 	 *   getCurrent may not be called.
 	 **/
-	public Object getCurrent( )
+	public E getCurrent( )
 	{
 		assert wellFormed() : "invariant failed at start of getCurrent";
 		// TODO: Implemented by student.
@@ -387,7 +411,7 @@ public class SortedSequence<E> implements Cloneable {
 		assert wellFormed() : "invariant failed at start of add";
 		
 		if (element == null) {
-			throw new NullPointerException();
+			throw new IllegalArgumentException();
 		}
 		
 		Node<E> temp = new Node<E>(element);
