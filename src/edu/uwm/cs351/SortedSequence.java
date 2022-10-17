@@ -4,7 +4,7 @@
 package edu.uwm.cs351;
 
 /*
- * Andrew Le
+ * Andrew_Le
  * Homework 6, CS 351
  */
 
@@ -13,7 +13,6 @@ import java.util.ConcurrentModificationException;
 import java.util.function.Consumer;
 
 import edu.uwm.cs.junit.LockedTestCase;
-import edu.uwm.cs351.NewApptBook.Node;
 
 /******************************************************************************
  * This class is a homework assignment;
@@ -467,6 +466,9 @@ public class SortedSequence<E> implements Cloneable {
 
 		for (Node<E> i = sequenceClone.dummy.next; i != null; i = i.next) {
 			this.insert((E) i.data);
+			if (i.next == sequenceClone.dummy) {
+				break;
+			}
 		}
 	}
 	
@@ -499,6 +501,8 @@ public class SortedSequence<E> implements Cloneable {
 		// (Create a new dummy node outside of loop).
 		// TODO: Copy the list
 		// (make sure cursor is updated too!)
+		
+		
 	
 		assert wellFormed() : "invariant failed at end of clone";
 		assert answer.wellFormed() : "invariant on answer failed at end of clone";
