@@ -13,6 +13,7 @@ import java.util.ConcurrentModificationException;
 import java.util.function.Consumer;
 
 import edu.uwm.cs.junit.LockedTestCase;
+import edu.uwm.cs351.ApptBook.Node;
 
 /******************************************************************************
  * This class is a homework assignment;
@@ -454,18 +455,16 @@ public class SortedSequence<E> implements Cloneable {
 	
 	public void insertAll(SortedSequence<E> sortedSequence) {
 		
-		if (sortedSequence.manyItems == 0) {
-			throw new IllegalStateException();
-		}
-		
 		SortedSequence<E> sequenceClone = sortedSequence;
 		
 		if (sortedSequence == this) {
 			sequenceClone = sortedSequence.clone();
 		}
 
-		for (Node<E> i = sequenceClone.dummy.next; i != null; i = i.next) {
-			this.insert((E) i.data);
+		for (Node<E> i = sequenceClone.dummy; i != null; i = i.next) {
+			if (i.data != sequenceClone.dummy) {
+				this.insert((E) i.data);
+			}
 			if (i.next == sequenceClone.dummy) {
 				break;
 			}
@@ -502,7 +501,20 @@ public class SortedSequence<E> implements Cloneable {
 		// TODO: Copy the list
 		// (make sure cursor is updated too!)
 		
+		answer = new SortedSequence<E>();
 		
+		for (Node<E> i = this.dummy; i != null; i = i.next) {
+			if (i.data != this.dummy) {
+				answer.insert(i.data);
+			}
+			if (i.next == this.dummy) {
+				break;
+			}
+		}
+		
+		if (this.isCurrent()) {
+			answer.setCurrent(this.getCurrent());
+		}
 	
 		assert wellFormed() : "invariant failed at end of clone";
 		assert answer.wellFormed() : "invariant on answer failed at end of clone";
