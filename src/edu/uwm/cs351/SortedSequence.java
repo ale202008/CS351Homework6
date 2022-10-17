@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 
 import edu.uwm.cs.junit.LockedTestCase;
+import edu.uwm.cs351.NewApptBook.Node;
 
 /******************************************************************************
  * This class is a homework assignment;
@@ -214,7 +215,9 @@ public class SortedSequence<E> implements Cloneable {
 	@SuppressWarnings("unchecked")
 	public SortedSequence( )
 	{
+		this (null);
 		manyItems = 0;
+		dummy = new Node();
 		cursor = dummy;
 	}
 	
@@ -344,6 +347,54 @@ public class SortedSequence<E> implements Cloneable {
 		else
 			throw new IllegalStateException();
 		assert wellFormed() : "invariant failed at end of advance";
+	}
+	
+	/**
+	 * Used similar code from Homework 4 with different cases
+	 * @param 
+	 * 		Appointment object to be added to the doubly list.
+	 * @exception
+	 * 		if element is null throw an exception
+	 * @return 
+	 * 		true if add() is called.
+	 */
+	public void insert(E element){	
+		assert wellFormed() : "invariant failed at start of add";
+		
+		if (element == null) {
+			throw new NullPointerException();
+		}
+		
+		Node<E> temp = new Node<E>(element);
+		if (dummy.next == dummy) {
+			dummy.next = temp;
+			dummy.prev = temp;
+			temp.prev = dummy;
+			temp.next = dummy;
+		}
+		else if (comparator.compare(dummy.next.data, element) > 0){
+			temp.next = dummy.next;
+			temp.prev = dummy;
+			dummy.next.prev = temp;
+			dummy.next = temp;
+			
+		}
+		else {
+			Node i;
+			for (i = dummy; i != null && i.prev != null; i = i.prev) {
+				if (element.compareTo(i.data) >= 0) {
+					break;
+				}
+			}
+			temp.next = i.next;
+			i.next.prev = temp;
+			temp.prev = i;
+			i.next = temp;
+		}
+		
+		
+		manyItems++;
+		assert wellFormed() : "invariant failed at end of add";
 	}
 	
 
