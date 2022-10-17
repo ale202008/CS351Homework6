@@ -217,7 +217,7 @@ public class SortedSequence<E> implements Cloneable {
 	{
 		this (null);
 		manyItems = 0;
-		dummy = new Node();
+		dummy = new Node<E>();
 		cursor = dummy;
 	}
 	
@@ -380,19 +380,26 @@ public class SortedSequence<E> implements Cloneable {
 			
 		}
 		else {
-			Node i;
-			for (i = dummy; i != null && i.prev != null; i = i.prev) {
-				if (element.compareTo(i.data) >= 0) {
+			Node<E> i;
+			Node<E> end;
+			for (end = dummy; end != null; end = end.prev) {
+				if (end.next == dummy) {
 					break;
 				}
 			}
+			for (i = end; i != null; i = i.prev) {
+				if (comparator.compare(element, i.data) >= 0) {
+					break;
+				}
+			}
+			
 			temp.next = i.next;
 			i.next.prev = temp;
 			temp.prev = i;
 			i.next = temp;
-		}
-		
-		
+
+			}
+			
 		manyItems++;
 		assert wellFormed() : "invariant failed at end of add";
 	}
